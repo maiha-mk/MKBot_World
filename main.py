@@ -6,7 +6,7 @@ import discord
 from discord.ext import commands
 from dotenv import load_dotenv
 
-# from cogs.admin import AdminCog
+from cogs.admin import AdminCog
 from dbconnection import get_config
 
 # 環境変数を読み込む
@@ -29,9 +29,8 @@ class MKBotWorld(commands.Bot):
 
     # 起動時の処理 on_ready()よりも早い
     async def setup_hook(self):
-        pass
         # Cogを追加
-        # await self.add_cog(AdminCog(bot, self.config))
+        await self.add_cog(AdminCog(bot, self.config))
 
     # 起動時の処理
     async def on_ready(self):
@@ -41,6 +40,10 @@ class MKBotWorld(commands.Bot):
 
         # 埋め込みメッセージ
         embed = discord.Embed(color=discord.Color.green(), title="ログイン")
+        description = ""
+        for guild in self.guilds:
+            description += f"{guild.name}:{guild.member_count}\n"
+        embed.description = f"```{description}``````Guilds:{len(bot.guilds)} Users:{len(bot.users)}```"
         embed.set_footer(text=jst_now.strftime("%Y/%m/%d %H:%M:%S.%f"))
         await self.get_channel(self.config.LOG_CHANNEL_ID).send(embed=embed)
 

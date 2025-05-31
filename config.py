@@ -1,13 +1,14 @@
 from typing import Any
 
 
-# DBから取得した設定情報を保持するためのクラス
+# 設定情報を表すクラス
 class Config():
 
     # ログを送信するチャンネルのID
     LOG_CHANNEL_ID: int
 
     # コンストラクタ
+    # rows: DBから取得したデータ
     def __init__(self, rows: list[tuple[Any, ...]]):
         
         for row in rows:
